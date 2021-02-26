@@ -14,11 +14,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button sendToSignUpPageBtn = (Button)findViewById(R.id.btn_send_to_sign_up);
-        sendToSignUpPageBtn.setOnClickListener(new View.OnClickListener() {
+        // Sign Up Page
+        Button sendToSignUpBtn = (Button)findViewById(R.id.btn_send_to_sign_up);
+        sendToSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(v.getContext(), SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // My Profile Page
+        // TODO: Need verification that login credentials (username + password) are good!!!
+        Button sendToMyProfileBtn = (Button)findViewById(R.id.btn_login);
+        sendToMyProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(v.getContext(), MyProfileActivity.class);
                 startActivity(intent);
             }
         });
