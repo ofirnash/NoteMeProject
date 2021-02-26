@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">NoteMe App</string>
+    <string name="text_main_message">Welcome! Sign in to your account</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="button_main_login">Login</string>
+    <string name="button_main_sign_up">Don\'t have an account? <b>Sign up</b></string>
+
+
+    <string name="button_sign_up">Sign up</string>
+    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
+    <string name="text_signup_message">Hello, let\'s set up your account</string>
+</resources>
