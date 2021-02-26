@@ -11,4 +11,7 @@
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="button_sign_up">Sign up</string>
     <string name="text_sign_up_terms">By signing up, you agree to our <b>terms and conditions</b></string>
+
+    <string name="text_my_notes_profile">My Notes</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

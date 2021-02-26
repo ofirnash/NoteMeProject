@@ -7,7 +7,7 @@
     tools:context=".SignUpActivity">
 
     <TextView
-        android:id="@+id/textViewSignUp"
+        android:id="@+id/text_view_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_sign_up_message"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_sign_up"
         app:layout_constraintVertical_bias="0.129" />
 
     <EditText
@@ -91,7 +91,7 @@
         app:layout_constraintVertical_bias="0.199" />
 
     <TextView
-        android:id="@+id/text_terms_and_conditions"
+        android:id="@+id/text_view_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_sign_up_terms"
