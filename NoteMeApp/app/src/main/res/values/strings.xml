@@ -6,8 +6,9 @@
     <string name="button_main_login">Login</string>
     <string name="button_main_sign_up">Don\'t have an account? <b>Sign up</b></string>
 
-
+    <string name="text_sign_up_message">Hey! let\'s set up your account</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_confirm_password">Confirm Password</string>
     <string name="button_sign_up">Sign up</string>
-    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
-    <string name="text_signup_message">Hello, let\'s set up your account</string>
+    <string name="text_sign_up_terms">By signing up, you agree to our <b>terms and conditions</b></string>
 </resources>

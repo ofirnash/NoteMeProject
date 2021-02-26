@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewLogin"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:background="#FFFFFF"
@@ -22,20 +22,20 @@
         app:layout_constraintVertical_bias="0.138" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/text_username"
         android:layout_width="240dp"
         android:layout_height="64dp"
         android:ems="10"
         android:hint="@string/hint_username"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintBottom_toTopOf="@+id/text_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogin"
         app:layout_constraintVertical_bias="0.812" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/text_password"
         android:layout_width="240dp"
         android:layout_height="64dp"
         android:layout_marginBottom="392dp"
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogin"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
@@ -55,14 +55,14 @@
         android:layout_height="52dp"
         android:text="@string/button_main_login"
         app:backgroundTint="#2196F3"
-        app:layout_constraintBottom_toTopOf="@+id/btn_signup"
+        app:layout_constraintBottom_toTopOf="@+id/btn_send_to_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/text_password"
         app:layout_constraintVertical_bias="0.757" />
 
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_send_to_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFF4F4"
@@ -73,7 +73,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/text_password"
         app:layout_constraintVertical_bias="0.462" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
