@@ -24,13 +24,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // My Profile Page
+        // Login -> Send to Maps
         // TODO: Need verification that login credentials (username + password) are good!!!
         Button sendToMyProfileBtn = (Button)findViewById(R.id.btn_login);
         sendToMyProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(v.getContext(), MyProfileActivity.class);
+                Intent intent = new Intent(v.getContext(), MapsActivity.class);
                 startActivity(intent);
             }
         });
