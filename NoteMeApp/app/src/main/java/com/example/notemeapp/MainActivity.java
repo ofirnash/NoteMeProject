@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Login Successful-> Send to Maps
         // TODO: Need verification for login credentials (username + password) are good!!!
-        Button sendToMyProfileBtn = (Button)findViewById(R.id.btn_login);
-        sendToMyProfileBtn.setOnClickListener(new View.OnClickListener() {
+        Button sendToMapsBtn = (Button)findViewById(R.id.btn_login);
+        sendToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(v.getContext(), MapsActivity.class);
