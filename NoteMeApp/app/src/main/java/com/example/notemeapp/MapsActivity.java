@@ -37,44 +37,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        //FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-    private void getLocationPermission(){
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-        }
-        else {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionResult (int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
-        mLocationPermissionGranted = false;
-        switch (requestCode){
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled -> Result arrays are empty
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
-        updateLocationUI();
-    }
+//    private void getLocationPermission(){
+//        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            mLocationPermissionGranted = true;
+//        }
+//        else {
+//            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionResult (int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
+//        mLocationPermissionGranted = false;
+//        switch (requestCode){
+//            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+//                // If request is cancelled -> Result arrays are empty
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    mLocationPermissionGranted = true;
+//                }
+//            }
+//        }
+//        //updateLocationUI();
+//    }
 
     // Set location controls on map
-    private void updateLocationUI(){
-        if (mMap == null){
-            return;
-        }
-        try{
-            if (mLocationPermissionGranted){
-                mMap.setMyLocationEnabled(true);
-
-            }
-        }
-    }
+//    private void updateLocationUI(){
+//        if (mMap == null){
+//            return;
+//        }
+//        try{
+//            if (mLocationPermissionGranted){
+//                mMap.setMyLocationEnabled(true);
+//
+//            }
+//        }
+//    }
 
     /**
      * Manipulates the map once available.
