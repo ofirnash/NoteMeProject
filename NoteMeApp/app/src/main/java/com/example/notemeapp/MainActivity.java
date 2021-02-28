@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Login -> Send to Maps
-        // TODO: Need verification that login credentials (username + password) are good!!!
+        // Login Successful-> Send to Maps
+        // TODO: Need verification for login credentials (username + password) are good!!!
         Button sendToMyProfileBtn = (Button)findViewById(R.id.btn_login);
         sendToMyProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
