@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -44,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     Circle circle;
+    double iMiles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,37 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
+        SeekBar seekBar = (SeekBar)findViewById(R.id.seekBarRadius);
+        seekBar.getProgress();
+        //final TextView seekBarValue = (TextView)findViewById(seekBar.getProgress());
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+                //seekBarValue.setText(String.valueOf(progress));
+                iMiles = progress;
+                Log.e("level", String.valueOf(progress));
+                zoomInOutCamera(mLastLocation);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -100,27 +133,6 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-//        mmap.setOn@Override
-//        public void onMyLocationChange(Location location) {
-//            float[] distance = new float[2];
-//
-//                    /*
-//                    Location.distanceBetween( mMarker.getPosition().latitude, mMarker.getPosition().longitude,
-//                            mCircle.getCenter().latitude, mCircle.getCenter().longitude, distance);
-//                            */
-//
-//            Location.distanceBetween( location.getLatitude(), location.getLongitude(),
-//                    mCircle.getCenter().latitude, mCircle.getCenter().longitude, distance);
-//
-//            if( distance[0] > mCircle.getRadius() ){
-//                Toast.makeText(getBaseContext(), "Outside, distance from center: " + distance[0] + " radius: " + mCircle.getRadius(), Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(getBaseContext(), "Inside, distance from center: " + distance[0] + " radius: " + mCircle.getRadius() , Toast.LENGTH_LONG).show();
-//            }
-//
-//        }
-//    });
-
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -128,7 +140,6 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
@@ -142,10 +153,47 @@ public class MapsActivity extends FragmentActivity implements
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
+        zoomInOutCamera(location);
+//        // Zoom in, animating the camera.
+//        double iMiles = 1; // TODO need to change this according to the value of seekbar!!!
+//        double iMeter = iMiles * 1609.34;
+//        //circle.remove();
+//        circle = mMap.addCircle(new CircleOptions()
+//                .center(new LatLng(location.getLatitude(), location.getLongitude()))
+//                .radius(iMeter) // Converting Miles into Meters...
+//                .strokeColor(Color.RED)
+//                .strokeWidth(5));
+//        circle.isVisible();
+//        float currentZoomLevel = getZoomLevel(circle);
+//        float animateZomm = currentZoomLevel + 5;
+//
+//        Log.e("Zoom Level:", currentZoomLevel + "");
+//        Log.e("Zoom Level Animate:", animateZomm + "");
+//
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZomm));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+//        Log.e("Circle Lat Long:", location.getLatitude() + ", " + location.getLongitude());
 
+
+//        //move map camera
+//        // TODO zoomTo change to kilometers: let zoom = getBaseLog(2, 40000 / (km / 2));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(2));
+
+        //stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+
+    }
+
+    private void zoomInOutCamera(Location location){
         // Zoom in, animating the camera.
-        double iMiles = 1; // TODO need to change this according to the value of seekbar!!!
+        //double iMiles = 1; // TODO need to change this according to the value of seekbar!!!
         double iMeter = iMiles * 1609.34;
+        if (circle!= null){
+            circle.remove();
+        }
         //circle.remove();
         circle = mMap.addCircle(new CircleOptions()
                 .center(new LatLng(location.getLatitude(), location.getLongitude()))
@@ -162,18 +210,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZomm));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
         Log.e("Circle Lat Long:", location.getLatitude() + ", " + location.getLongitude());
-
-
-//        //move map camera
-//        // TODO zoomTo change to kilometers: let zoom = getBaseLog(2, 40000 / (km / 2));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(2));
-
-        //stop location updates
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }
-
+        mLastLocation = location;
     }
 
     private float getZoomLevel(Circle circle) {
