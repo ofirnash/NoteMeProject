@@ -9,6 +9,7 @@
 
     <!--Sign Up Activity-->
     <string name="text_sign_up_message">Hey! let\'s set up your account</string>
+    <string name="hint_full_name">Full Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="button_sign_up">Sign up</string>

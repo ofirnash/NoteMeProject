@@ -2,11 +2,13 @@ package com.example.notemeapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -23,6 +25,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -39,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
+    Circle circle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,16 +142,48 @@ public class MapsActivity extends FragmentActivity implements
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-        //move map camera
-        // TODO zoomTo change to kilometers: let zoom = getBaseLog(2, 40000 / (km / 2));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(2));
+
+        // Zoom in, animating the camera.
+        double iMiles = 1; // TODO need to change this according to the value of seekbar!!!
+        double iMeter = iMiles * 1609.34;
+        //circle.remove();
+        circle = mMap.addCircle(new CircleOptions()
+                .center(new LatLng(location.getLatitude(), location.getLongitude()))
+                .radius(iMeter) // Converting Miles into Meters...
+                .strokeColor(Color.RED)
+                .strokeWidth(5));
+        circle.isVisible();
+        float currentZoomLevel = getZoomLevel(circle);
+        float animateZomm = currentZoomLevel + 5;
+
+        Log.e("Zoom Level:", currentZoomLevel + "");
+        Log.e("Zoom Level Animate:", animateZomm + "");
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZomm));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
+        Log.e("Circle Lat Long:", location.getLatitude() + ", " + location.getLongitude());
+
+
+//        //move map camera
+//        // TODO zoomTo change to kilometers: let zoom = getBaseLog(2, 40000 / (km / 2));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(2));
 
         //stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
+    }
+
+    private float getZoomLevel(Circle circle) {
+        float zoomLevel=0;
+        if (circle != null){
+            double radius = circle.getRadius();
+            double scale = radius / 500;
+            zoomLevel =(int) (16 - Math.log(scale) / Math.log(2));
+        }
+        return zoomLevel +.5f;
     }
 
     @Override
