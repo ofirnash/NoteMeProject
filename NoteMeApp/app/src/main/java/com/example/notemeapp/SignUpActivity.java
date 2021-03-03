@@ -53,6 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
                     //TODO: add a popup that data is not good
                     Toast.makeText(getApplicationContext(), "Can't sign in. Make sure you have entered all data required properly", Toast.LENGTH_LONG).show();
                 } else {
+                    // TODO: Add to SharedPreferences in order to save his login session.
                     addToMongo();
                     Intent intent = new Intent(v.getContext(), MapsActivity.class);
                     startActivity(intent);
