@@ -46,4 +46,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_new_note_name"
         app:layout_constraintVertical_bias="0.062" />
+
+    <Button
+        android:id="@+id/btn_create_note"
+        android:layout_width="251dp"
+        android:layout_height="52dp"
+        android:text="@string/button_create_note"
+        app:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_new_note_description"
+        app:layout_constraintVertical_bias="0.716" />
 </androidx.constraintlayout.widget.ConstraintLayout>

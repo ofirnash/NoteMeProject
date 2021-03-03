@@ -27,9 +27,10 @@
     <string name="button_back_to_maps">Back to map</string>
 
     <!--New Note Activity-->
-    <string name="text_new_note_title">Please fill out the information of your new note:</string>
+    <string name="text_new_note_title">Please fill out the information for your new note:</string>
     <string name="hint_new_note_name">Note Name</string>
     <string name="hint_new_note_description">Note Description</string>
+    <string name="button_create_note">Create Note</string>
 
 
     <!--MongoDB connection-->
