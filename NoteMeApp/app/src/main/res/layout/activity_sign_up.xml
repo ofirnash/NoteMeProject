@@ -21,20 +21,6 @@
         app:layout_constraintVertical_bias="0.121" />
 
     <EditText
-        android:id="@+id/text_full_name_sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/hint_full_name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/text_email_address_sign_up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_sign_up"
-        app:layout_constraintVertical_bias="0.62" />
-
-    <EditText
         android:id="@+id/text_email_address_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

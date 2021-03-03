@@ -37,6 +37,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+
+import java.lang.reflect.Array;
 
 
 public class MapsActivity extends FragmentActivity implements
@@ -49,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
+    Marker[] allMarkers; // In order hide markers outside of radius, do we want?
     LocationRequest mLocationRequest;
     Circle circle;
     double iMiles = 100; // Initializer
@@ -106,8 +115,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private String getLoggedInUser(){
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        editor = pref.edit();
-        return pref.getString("users_username", null); // getting String, Null if empty
+        //editor = pref.edit();
+        return pref.getString("users_username", null); // get username as String, Null if empty
     }
 
 
@@ -115,6 +124,9 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
+
+        //TODO: Load markers from DB
+
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -152,6 +164,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.addMarker(markerOptions);
 
         //TODO: Add marker to DB and add information about it.. New activity page?
+        addMarkerToDB(latLng);
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -337,8 +350,30 @@ public class MapsActivity extends FragmentActivity implements
                 }
                 return;
             }
+        }
+    }
 
+    private void addMarkerToDB(LatLng latLng){
+        try {
+            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/addmarker");
+            MongoClient client = new MongoClient(uri);
 
+            MongoDatabase db = client.getDatabase(uri.getDatabase());
+            MongoCollection<BasicDBObject> collection = db.getCollection("markers", BasicDBObject.class);
+
+            // FIX!!!
+            BasicDBObject document = new BasicDBObject();
+            document.put("name", "mkyong");
+            document.put("age", 30);
+            collection.insertOne(document);
+
+            MongoCursor iterator = collection.find().iterator();
+
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
