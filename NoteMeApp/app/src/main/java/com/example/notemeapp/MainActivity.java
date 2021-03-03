@@ -51,12 +51,9 @@ public class MainActivity extends AppCompatActivity {
                 username = (EditText) findViewById(R.id.text_username);
                 password = (EditText) findViewById(R.id.text_password);
                 if (checkLoginData()) {
-                    if (!checkMatchingAccount()) {
-                        //TODO: add a popup that data is not good - Login unsuccessful
+                    if (!checkMatchingAccountInDB()) {
                         Toast.makeText(getApplicationContext(), "The username or password you’ve entered doesn’t match any account.", Toast.LENGTH_LONG).show();
                     } else {
-                        // TODO: Add to SharedPreferences in order to save his login session. (other option to store the data in global variable)
-
                         // Shared prefs - Store Attempt!
                         storeUserInSharedPreferences();
                         Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
@@ -84,13 +81,33 @@ public class MainActivity extends AppCompatActivity {
         return allowLogin;
     }
 
-    private boolean checkMatchingAccount(){
+    private boolean checkMatchingAccountInDB(){
         //TODO: Check matching credentials in DB
         return true; // FOR TESTING! REMOVE
+//        try {
+//            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/login");
+//            MongoClient client = new MongoClient(uri);
+//
+//            MongoDatabase db = client.getDatabase(uri.getDatabase());
+//            MongoCollection<BasicDBObject> collection = db.getCollection("users", BasicDBObject.class);
+//
+//            // FIX!!!
+//            BasicDBObject document = new BasicDBObject();
+//            document.put("name", "mkyong");
+//            document.put("age", 30);
+//            collection.insertOne(document);
+//
+//            MongoCursor iterator = collection.find().iterator();
+//
+//            while (iterator.hasNext()) {
+//                System.out.println(iterator.next());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void storeUserInSharedPreferences(){
-        //TODO: Check if username is enough for us...
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         editor = pref.edit();
 

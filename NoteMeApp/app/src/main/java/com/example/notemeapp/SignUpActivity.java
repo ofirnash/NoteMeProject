@@ -23,7 +23,7 @@ import com.mongodb.client.MongoDatabase;
 import org.w3c.dom.Text;
 
 public class SignUpActivity extends AppCompatActivity {
-    EditText fullName; //TODO: Need to add box in the page - DONE!
+    EditText username;
     EditText email;
     EditText password;
     EditText confirmPass;
@@ -41,7 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         text = (TextView) findViewById(R.id.text_view_sign_up);
         terms = (TextView) findViewById(R.id.text_view_terms);
-        fullName = (EditText) findViewById(R.id.text_full_name_sign_up); //Add to the app! - DONE!
+        username = (EditText) findViewById(R.id.text_user_name_sign_up);
         email = (EditText) findViewById(R.id.text_email_address_sign_up);
         password = (EditText) findViewById(R.id.text_password_sign_up);
         confirmPass = (EditText) findViewById(R.id.text_confirm_password_sign_up);
@@ -54,11 +54,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean signUpData = checkSignUpData();
                 if (!signUpData) {
-                    //TODO: add a popup that data is not good
                     Toast.makeText(getApplicationContext(), "Can't sign in. Make sure you have entered all data required properly", Toast.LENGTH_LONG).show();
-                    //Toast.makeText(getApplicationContext(), "Can't sign in. Make sure you have entered all data required properly", Toast.LENGTH_LONG).show(); // TODO is this needed?
                 } else {
-                    // TODO: Add to SharedPreferences in order to save his login session.
                     storeUserInSharedPreferences();
                     Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
 
@@ -82,9 +79,9 @@ public class SignUpActivity extends AppCompatActivity {
     //This function checks that all required data is filled and that password was confirmed properly
     private boolean checkSignUpData() {
         boolean allowSignUp = true;
-        if (fullName.getText().toString().isEmpty()) {
+        if (username.getText().toString().isEmpty()) {
             allowSignUp = false;
-            fullName.setError("Must not be empty");
+            username.setError("Must not be empty");
         }
         if (email.getText().toString().isEmpty()) {
             allowSignUp = false;
@@ -100,7 +97,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         if (!password.getText().toString().equals(confirmPass.getText().toString())) {
             allowSignUp = false;
-            //TODO: add a popup that says that the password don't match
             Toast.makeText(getApplicationContext(), "Passwords don't match", Toast.LENGTH_SHORT).show();
         } else {
             String verifyEmail = email.getText().toString();
@@ -117,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         editor = pref.edit();
 
-        editor.putString("users_username", fullName.getText().toString()); // Storing string // TODO USERNAME == FULLNAME?? NEED TO CHECK!!!
+        editor.putString("users_username", username.getText().toString()); // Storing string
         editor.putString("users_password", password.getText().toString()); // Storing string
 
         editor.commit(); // commit changes
