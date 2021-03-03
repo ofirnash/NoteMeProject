@@ -3,6 +3,7 @@ package com.example.notemeapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -27,6 +28,9 @@ public class SignUpActivity extends AppCompatActivity {
     EditText password;
     EditText confirmPass;
     Button signUp;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    String loggedInUser;
     TextView text;
     TextView terms;
 
@@ -52,8 +56,12 @@ public class SignUpActivity extends AppCompatActivity {
                 if (!signUpData) {
                     //TODO: add a popup that data is not good
                     Toast.makeText(getApplicationContext(), "Can't sign in. Make sure you have entered all data required properly", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Can't sign in. Make sure you have entered all data required properly", Toast.LENGTH_LONG).show(); // TODO is this needed?
                 } else {
                     // TODO: Add to SharedPreferences in order to save his login session.
+                    storeUserInSharedPreferences();
+                    Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
+
                     addToMongo();
                     Intent intent = new Intent(v.getContext(), MapsActivity.class);
                     startActivity(intent);
@@ -90,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
             allowSignUp = false;
             confirmPass.setError("Must not be empty");
         }
-        if (password.getText().toString() != confirmPass.getText().toString()) {
+        if (!password.getText().toString().equals(confirmPass.getText().toString())) {
             allowSignUp = false;
             //TODO: add a popup that says that the password don't match
             Toast.makeText(getApplicationContext(), "Passwords don't match", Toast.LENGTH_SHORT).show();
@@ -102,6 +110,19 @@ public class SignUpActivity extends AppCompatActivity {
             }
         }
         return allowSignUp;
+    }
+
+    private void storeUserInSharedPreferences(){
+        //TODO: Check if username is enough for us...
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        editor = pref.edit();
+
+        editor.putString("users_username", fullName.getText().toString()); // Storing string // TODO USERNAME == FULLNAME?? NEED TO CHECK!!!
+        editor.putString("users_password", password.getText().toString()); // Storing string
+
+        editor.commit(); // commit changes
+
+        loggedInUser = pref.getString("users_username", null); // getting String, Null if empty
     }
 
     private void addToMongo() {
