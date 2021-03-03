@@ -1,6 +1,8 @@
 package com.example.notemeapp;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -9,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.OnMapClickListener,
         LocationListener{
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
@@ -47,6 +52,10 @@ public class MapsActivity extends FragmentActivity implements
     LocationRequest mLocationRequest;
     Circle circle;
     double iMiles = 100; // Initializer
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    String loggedInUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,14 +69,19 @@ public class MapsActivity extends FragmentActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
+        // Retrieve logged in username
+        loggedInUser = getLoggedInUser();
+        if (loggedInUser == null){
+            // Retrieve failed -> Send to MainActivity
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+        }
 
         SeekBar seekBar = (SeekBar)findViewById(R.id.seekBarRadius);
         seekBar.getProgress();
         //final TextView seekBarValue = (TextView)findViewById(seekBar.getProgress());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
@@ -90,11 +104,17 @@ public class MapsActivity extends FragmentActivity implements
         });
     }
 
+    private String getLoggedInUser(){
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        editor = pref.edit();
+        return pref.getString("users_username", null); // getting String, Null if empty
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setOnMapClickListener(this);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -107,6 +127,31 @@ public class MapsActivity extends FragmentActivity implements
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+
+        // Creating a marker
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        // Setting the position for the marker
+        markerOptions.position(latLng);
+
+        // Setting the title for the marker.
+        // This will be displayed on taping the marker
+        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+
+        // Clears the previously touched position
+        //mMap.clear();
+
+        // Animating to the touched position
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        // Placing a marker on the touched position
+        mMap.addMarker(markerOptions);
+
+        //TODO: Add marker to DB and add information about it.. New activity page?
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -189,7 +234,6 @@ public class MapsActivity extends FragmentActivity implements
 
     private void zoomInOutCamera(Location location){
         // Zoom in, animating the camera.
-        //double iMiles = 1; // TODO need to change this according to the value of seekbar!!!
         double iMeter = iMiles * 1609.34;
         if (circle!= null){
             circle.remove();
