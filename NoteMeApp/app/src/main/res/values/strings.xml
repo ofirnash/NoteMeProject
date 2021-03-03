@@ -30,8 +30,9 @@
     <string name="text_new_note_title">Please fill out the information for your new note:</string>
     <string name="hint_new_note_name">Note Name</string>
     <string name="hint_new_note_description">Note Description</string>
+    <string name="button_upload_image_from_gallery">Upload Photo</string>
+    <string name="button_take_image_from_camer">Take Photo</string>
     <string name="button_create_note">Create Note</string>
-
 
     <!--MongoDB connection-->
     <string name="mongo_db_client_uri">mongodb://localhost:27017/signup</string>
