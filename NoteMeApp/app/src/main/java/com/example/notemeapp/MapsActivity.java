@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.media.Image;
 import android.os.Build;
 
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -67,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements
     String loggedInUser;
     EditText newNoteName;
     EditText newNoteDescription;
+    ImageView newNoteImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,9 +196,13 @@ public class MapsActivity extends FragmentActivity implements
         Intent intent = new Intent(this, AddNewNoteActivity.class);
         startActivity(intent);
         //finish();
+
+        // Fetch new note's data to add to DB
         newNoteName = (EditText) findViewById(R.id.text_new_note_name);
         newNoteDescription = (EditText) findViewById(R.id.text_new_note_description);
-        //TODO: Add marker to DB
+        newNoteImage = (ImageView) findViewById(R.id.image_view_new_photo_uploaded);
+
+        //TODO: Add note/marker to DB
         //addMarkerToDB(latLng);
     }
 

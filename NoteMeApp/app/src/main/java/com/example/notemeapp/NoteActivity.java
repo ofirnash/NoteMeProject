@@ -40,6 +40,8 @@ public class NoteActivity extends AppCompatActivity {
         noteDescription = (TextView) findViewById(R.id.text_view_note_description);
         noteImage = (ImageView) findViewById(R.id.image_view_note);
 
+        // TODO: Set text once extracted from DB and move to visible!!! This will be if the user doesn't enter anything. Default is invisible
+        // Set
         noteName.setText("BLA");
         noteDescription.setText("BLA");
         //noteImage.setImageResource();

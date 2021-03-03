@@ -58,4 +58,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_new_note_description"
         app:layout_constraintVertical_bias="0.716" />
+
+    <Button
+        android:id="@+id/btn_upload_photo_from_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:text="@string/button_upload_image_from_gallery"
+        app:backgroundTint="#707070"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_note"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_new_note_description"
+        app:layout_constraintVertical_bias="0.18" />
+
+    <Button
+        android:id="@+id/btn_take_photo_from_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_take_image_from_camer"
+        app:backgroundTint="#707070"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toEndOf="@+id/btn_upload_photo_from_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/text_new_note_description"
+        app:layout_constraintVertical_bias="0.18" />
+
+    <ImageView
+        android:id="@+id/image_view_new_photo_uploaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_new_note_description"
+        app:layout_constraintVertical_bias="0.7"
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
