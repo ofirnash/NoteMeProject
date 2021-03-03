@@ -29,7 +29,9 @@ android {
 }
 
 dependencies {
-
+//    implementation 'org.mongodb:mongodb-driver-sync:4.1.2'
+//    implementation 'org.mongodb:mongodb-driver-legacy:4.1.2'
+    implementation 'org.mongodb:mongo-java-driver:3.0.3'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

@@ -1,5 +1,5 @@
 <resources>
-    <!--My Profile Activity-->
+    <!--Main Activity-->
     <string name="app_name">NoteMe App</string>
     <string name="text_main_message">Welcome! Sign in to your account</string>
     <string name="hint_username">Username</string>
@@ -13,14 +13,19 @@
     <string name="hint_email">Email</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="button_sign_up">Sign up</string>
+    <string name="button_go_back_to_login">Back</string>
     <string name="text_sign_up_terms">By signing up, you agree to our <b>terms and conditions</b></string>
 
     <!--My Profile Activity-->
     <string name="text_my_notes_profile">My Notes</string>
+    <string name="button_go_back_general">Back</string>
 
     <!--Maps Activity-->
     <string name="title_activity_maps">Map</string>
 
     <!--Note Activity-->
     <string name="button_back_to_maps">Back to map</string>
+
+    <!--MongoDB connection-->
+    <string name="mongo_db_client_uri">mongodb://localhost:27017/signup</string>
 </resources>

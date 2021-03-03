@@ -19,8 +19,9 @@ public class NoteActivity extends AppCompatActivity {
         sendBackToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(v.getContext(), MapsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(v.getContext(), MapsActivity.class);
+//                startActivity(intent);
+                finish(); // TODO - Test if it works (returns to the previous state), if not use above commented out code which will initialize everything again.
             }
         });
     }

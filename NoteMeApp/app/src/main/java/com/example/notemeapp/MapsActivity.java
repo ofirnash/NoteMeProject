@@ -46,7 +46,7 @@ public class MapsActivity extends FragmentActivity implements
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     Circle circle;
-    double iMiles;
+    double iMiles = 100; // Initializer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
                 //seekBarValue.setText(String.valueOf(progress));
-                iMiles = progress;
+                iMiles = 100 - progress; // Handle reversed seekBar
                 Log.e("level", String.valueOf(progress));
                 zoomInOutCamera(mLastLocation);
             }
@@ -202,12 +202,12 @@ public class MapsActivity extends FragmentActivity implements
                 .strokeWidth(5));
         circle.isVisible();
         float currentZoomLevel = getZoomLevel(circle);
-        float animateZomm = currentZoomLevel + 5;
+        float animateZoom = currentZoomLevel + 5;
 
         Log.e("Zoom Level:", currentZoomLevel + "");
-        Log.e("Zoom Level Animate:", animateZomm + "");
+        Log.e("Zoom Level Animate:", animateZoom + "");
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZomm));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZoom));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
         Log.e("Circle Lat Long:", location.getLatitude() + ", " + location.getLongitude());
         mLastLocation = location;
