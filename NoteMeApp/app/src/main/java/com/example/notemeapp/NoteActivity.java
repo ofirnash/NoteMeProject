@@ -3,9 +3,11 @@ package com.example.notemeapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,8 @@ public class NoteActivity extends AppCompatActivity {
     TextView noteName;
     TextView noteDescription;
     ImageView noteImage;
+    ImageButton likeBtn;
+    Button sendBackToMapsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,17 @@ public class NoteActivity extends AppCompatActivity {
         noteDescription.setText("BLA");
         //noteImage.setImageResource();
 
+        // Like button
+        likeBtn = (ImageButton) findViewById(R.id.btn_like);
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                // TODO: Implement +1 to like in DB
+            }
+        });
+
         // Back to Maps
-        Button sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
+        sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
         sendBackToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
