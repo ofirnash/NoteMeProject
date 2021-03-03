@@ -6,17 +6,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.media.Image;
 import android.os.Build;
 
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -46,14 +44,13 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
-import java.lang.reflect.Array;
-
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener,
         LocationListener{
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
@@ -68,11 +65,14 @@ public class MapsActivity extends FragmentActivity implements
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     String loggedInUser;
+    EditText newNoteName;
+    EditText newNoteDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
 
         seekBar = (SeekBar)findViewById(R.id.seekBarRadius);
         seekBar.getProgress();
@@ -139,6 +139,8 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
+        mMap.setOnMarkerClickListener(this);
+
 
         //TODO: Load markers from DB
 
@@ -154,6 +156,15 @@ public class MapsActivity extends FragmentActivity implements
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        // TODO send to NoteActivity the marker in order to extract, send marker.getPosition()
+        Intent intent = new Intent(this, NoteActivity.class);
+        intent.putExtra("Marker_Position_To_Extract", marker.getPosition());
+        startActivity(intent);
+        return false;
     }
 
     @Override
@@ -179,8 +190,12 @@ public class MapsActivity extends FragmentActivity implements
         // Placing a marker on the touched position
         mMap.addMarker(markerOptions);
 
-        //TODO: Add marker to DB and add information about it.. Send to new note activity and get values from there
-        
+        Intent intent = new Intent(this, AddNewNoteActivity.class);
+        startActivity(intent);
+        //finish();
+        newNoteName = (EditText) findViewById(R.id.text_new_note_name);
+        newNoteDescription = (EditText) findViewById(R.id.text_new_note_description);
+        //TODO: Add marker to DB
         //addMarkerToDB(latLng);
     }
 

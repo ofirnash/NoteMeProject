@@ -11,19 +11,24 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class NoteActivity extends AppCompatActivity {
     TextView noteName;
     TextView noteDescription;
     ImageView noteImage;
     ImageButton likeBtn;
     Button sendBackToMapsBtn;
+    LatLng markerPositionToExtract;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
-        // TODO: Extract note by lat/long -
+        markerPositionToExtract = getIntent().getExtras().getParcelable("Marker_Position_To_Extract"); // Example: lat/lng: (37.4759737583517,-122.12302297353743)
+
+        // TODO: Extract note by markerPositionToExtract: lat/long -
         //                'user': user,
         //                'title': title,
         //                'description': description,
@@ -53,9 +58,7 @@ public class NoteActivity extends AppCompatActivity {
         sendBackToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-//                Intent intent = new Intent(v.getContext(), MapsActivity.class);
-//                startActivity(intent);
-                finish(); // TODO - Test if it works (returns to the previous state), if not use above commented out code which will initialize everything again.
+                finish();
             }
         });
     }
