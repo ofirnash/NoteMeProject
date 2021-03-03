@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.media.Image;
 import android.os.Build;
 
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,8 @@ public class MapsActivity extends FragmentActivity implements
     LocationRequest mLocationRequest;
     Circle circle;
     double iMiles = 100; // Initializer
+    SeekBar seekBar;
+    ImageButton sendToMyProfileBtn;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     String loggedInUser;
@@ -69,6 +73,9 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        seekBar = (SeekBar)findViewById(R.id.seekBarRadius);
+        seekBar.getProgress();
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -86,8 +93,16 @@ public class MapsActivity extends FragmentActivity implements
                 startActivity(intent);
         }
 
-        SeekBar seekBar = (SeekBar)findViewById(R.id.seekBarRadius);
-        seekBar.getProgress();
+        // MyProfile page
+        sendToMyProfileBtn = (ImageButton)findViewById(R.id.myProfileBtn);
+        sendToMyProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(v.getContext(), MyProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //final TextView seekBarValue = (TextView)findViewById(seekBar.getProgress());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
@@ -143,6 +158,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapClick(LatLng latLng) {
+        // New Marker!
 
         // Creating a marker
         MarkerOptions markerOptions = new MarkerOptions();
@@ -163,8 +179,9 @@ public class MapsActivity extends FragmentActivity implements
         // Placing a marker on the touched position
         mMap.addMarker(markerOptions);
 
-        //TODO: Add marker to DB and add information about it.. New activity page?
-        addMarkerToDB(latLng);
+        //TODO: Add marker to DB and add information about it.. Send to new note activity and get values from there
+        
+        //addMarkerToDB(latLng);
     }
 
     protected synchronized void buildGoogleApiClient() {

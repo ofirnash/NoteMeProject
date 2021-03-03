@@ -26,6 +26,12 @@
     <!--Note Activity-->
     <string name="button_back_to_maps">Back to map</string>
 
+    <!--New Note Activity-->
+    <string name="text_new_note_title">Please fill out the information of your new note:</string>
+    <string name="hint_new_note_name">Note Name</string>
+    <string name="hint_new_note_description">Note Description</string>
+
+
     <!--MongoDB connection-->
     <string name="mongo_db_client_uri">mongodb://localhost:27017/signup</string>
 </resources>
