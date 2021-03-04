@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="0dp"/>
 
     <SeekBar
         android:id="@+id/seekBarRadius"
@@ -36,7 +36,7 @@
             android:layout_height="58dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/myprofile" />
+            android:src="@drawable/myprofile"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
