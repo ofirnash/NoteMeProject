@@ -21,7 +21,6 @@ import java.util.List;
 
 public class MyProfileActivity extends AppCompatActivity {
     SharedPreferences pref;
-    SharedPreferences.Editor editor;
     String loggedInUser;
 
     @Override
@@ -56,7 +55,6 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private String getLoggedInUser(){
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        //editor = pref.edit();
         return pref.getString("users_username", null); // get username as String, Null if empty
     }
 }
