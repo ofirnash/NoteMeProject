@@ -109,7 +109,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void storeUserInSharedPreferences(){
-        //TODO: Check if username is enough for us...
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         editor = pref.edit();
 
