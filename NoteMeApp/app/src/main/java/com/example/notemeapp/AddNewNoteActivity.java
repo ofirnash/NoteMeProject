@@ -23,8 +23,10 @@ public class AddNewNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_note);
 
         photoChosen = (ImageView) findViewById(R.id.image_view_new_photo_uploaded);
-
         takePhotoBtn = (Button) findViewById(R.id.btn_take_photo_from_camera);
+        uploadPhotoBtn = (Button) findViewById(R.id.btn_upload_photo_from_gallery);
+        createNoteBtn = (Button) findViewById(R.id.btn_create_note);
+
         takePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,7 +35,6 @@ public class AddNewNoteActivity extends AppCompatActivity {
             }
         });
 
-        uploadPhotoBtn = (Button) findViewById(R.id.btn_upload_photo_from_gallery);
         uploadPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +44,6 @@ public class AddNewNoteActivity extends AppCompatActivity {
             }
         });
 
-        createNoteBtn = (Button) findViewById(R.id.btn_create_note);
         createNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

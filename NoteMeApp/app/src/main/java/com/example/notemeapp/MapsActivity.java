@@ -75,9 +75,9 @@ public class MapsActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
         seekBar = (SeekBar)findViewById(R.id.seekBarRadius);
         seekBar.getProgress();
+        sendToMyProfileBtn = (ImageButton)findViewById(R.id.myProfileBtn);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -96,7 +96,6 @@ public class MapsActivity extends FragmentActivity implements
         }
 
         // MyProfile page
-        sendToMyProfileBtn = (ImageButton)findViewById(R.id.myProfileBtn);
         sendToMyProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -140,7 +139,6 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
 
-
         //TODO: Load markers from DB
 
         //Initialize Google Play Services
@@ -159,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // TODO send to NoteActivity the marker in order to extract, send marker.getPosition()
+        // TODO send to NoteActivity the marker in order to extract, send marker.getPosition() - DONE?
         Intent intent = new Intent(this, NoteActivity.class);
         intent.putExtra("Marker_Position_To_Extract", marker.getPosition());
         startActivity(intent);
@@ -213,7 +211,6 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
-
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
@@ -223,7 +220,6 @@ public class MapsActivity extends FragmentActivity implements
                 PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-
     }
 
     @Override
@@ -258,6 +254,7 @@ public class MapsActivity extends FragmentActivity implements
     private void zoomInOutCamera(Location location){
         // Zoom in, animating the camera.
         double iMeter = iMiles * 1609.34;
+
         if (circle!= null){
             circle.remove();
         }

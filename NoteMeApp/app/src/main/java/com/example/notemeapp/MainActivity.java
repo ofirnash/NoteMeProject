@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Sign Up Page
         sendToSignUpBtn = (Button)findViewById(R.id.btn_send_to_sign_up);
+        sendToMapsBtn = (Button)findViewById(R.id.btn_login);
+
+        // Sign Up Page
         sendToSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Login Successful-> Send to Maps
         // TODO: Need verification for login credentials (username + password) are good!!!
-        sendToMapsBtn = (Button)findViewById(R.id.btn_login);
         sendToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){

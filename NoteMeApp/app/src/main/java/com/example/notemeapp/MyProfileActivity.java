@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MyProfileActivity extends AppCompatActivity {
+    Button goBackBtn;
     SharedPreferences pref;
     String loggedInUser;
 
@@ -27,6 +28,8 @@ public class MyProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
+
+        goBackBtn = (Button)findViewById(R.id.btn_send_back_from_profile);
 
         //TODO: Set up adapter!!!
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.my_notes_recycler);
@@ -44,7 +47,6 @@ public class MyProfileActivity extends AppCompatActivity {
         //fetchMyNotesFromDB();
 
         // Go back to maps
-        Button goBackBtn = (Button)findViewById(R.id.btn_send_back_from_profile);
         goBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
