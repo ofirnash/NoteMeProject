@@ -24,15 +24,6 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
         photoChosen = (ImageView) findViewById(R.id.image_view_new_photo_uploaded);
 
-        createNoteBtn = (Button) findViewById(R.id.btn_create_note);
-        createNoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Note Created!", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
-
         takePhotoBtn = (Button) findViewById(R.id.btn_take_photo_from_camera);
         takePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +42,15 @@ public class AddNewNoteActivity extends AppCompatActivity {
                 startActivityForResult(uploadPhoto , 1);//one can be replaced with any action code
             }
         });
+
+        createNoteBtn = (Button) findViewById(R.id.btn_create_note);
+        createNoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Note Created!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -64,7 +64,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
                     imageBitmap = (Bitmap) extras.get("data");
                     photoChosen.setImageBitmap(imageBitmap);
                     //Uri selectedImage = imageReturnedIntent.getData();
-                   // photoChosen.setImageURI(selectedImage);
+                    // photoChosen.setImageURI(selectedImage);
                     photoChosen.setVisibility(View.VISIBLE);
                 }
 

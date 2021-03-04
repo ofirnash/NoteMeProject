@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -51,6 +52,7 @@ public class NoteActivity extends AppCompatActivity {
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                Toast.makeText(getApplicationContext(), "Liked!", Toast.LENGTH_LONG).show();
                 // TODO: Implement +1 to like in DB
             }
         });
