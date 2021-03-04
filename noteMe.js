@@ -14,26 +14,24 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
     else {
         //Sign up
         app.post('/signup', (req,res,next) =>{
-            let firstName = req.body.firstName;
-            let lastName = req.body.lastName;
             let email = req.body.email;
+            let userName = req.body.userName;
             let password = req.body.password;
 
             let insertJSON = {
-                'firstName': firstName,
-                'lastName': lastName,
                 'email': email,
+                'userName': userName,
                 'password': password
             };
             console.log(insertJSON);
             let db = client.db('noteMeDB');
             
-            //Check if email already exists in DB
+            //Check if username already exists in DB (username should be unique)
             db.collection('users')
-                .find({'email':email}).count(function(err,number){
+                .find({'userName':userName}).count(function(err,number){
                     if (number != 0){
-                        res.json('Email already exists');
-                        console.log('Email already exists');
+                        res.json('User name already exists');
+                        console.log('User name already exists');
                     } else {
                         //Insert new user to DB
                         db.collection('users').insertOne(insertJSON, function(error,response){
@@ -47,20 +45,20 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
         //Login
         app.post('/login',(req,res,next) => {
             console.log(req);
-            let email = req.body.email;
+            let userName = req.body.userName;
             let password = req.body.password;
 
             let db = client.db('noteMeDB');
 
             //Check if email exists
             db.collection('users')
-                .find({'email':email}).count(function(err,number){
+                .find({'userName':userName}).count(function(err,number){
                     if (number == 0){
-                        res.json('Email does not exists');
-                        console.log('Email does not exists');
+                        res.json('User does not exists');
+                        console.log('User does not exists');
                     } else {
                         db.collection('users')
-                            .findOne({'email':email}, function(err,user){
+                            .findOne({'userName':userName}, function(err,user){
                                  if (user.password == password){
                                      res.json('User legged in successfully');
                                      console.log('User logged in successfully');
@@ -75,7 +73,7 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
 
         //addNote
         app.post('/addnote', (req,res,next) => {
-            let user = req.body.user;
+            let userName = req.body.userName;
             let title = req.body.title;
             let description = req.body.description;
             let image = req.body.image;
@@ -83,7 +81,7 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             let longitude = req.body.longitude;
 
             let insertJSON = {
-                'user': user,
+                'userName': userName,
                 'title': title,
                 'description': description,
                 'image': image,
