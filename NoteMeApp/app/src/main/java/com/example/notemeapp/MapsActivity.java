@@ -65,7 +65,6 @@ public class MapsActivity extends FragmentActivity implements
     SeekBar seekBar;
     ImageButton sendToMyProfileBtn;
     SharedPreferences pref;
-    SharedPreferences.Editor editor;
     String loggedInUser;
     EditText newNoteName;
     EditText newNoteDescription;
@@ -106,8 +105,6 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
-        //final TextView seekBarValue = (TextView)findViewById(seekBar.getProgress());
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
@@ -133,7 +130,6 @@ public class MapsActivity extends FragmentActivity implements
 
     private String getLoggedInUser(){
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        //editor = pref.edit();
         return pref.getString("users_username", null); // get username as String, Null if empty
     }
 
@@ -251,31 +247,6 @@ public class MapsActivity extends FragmentActivity implements
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         zoomInOutCamera(location);
-//        // Zoom in, animating the camera.
-//        double iMiles = 1; // TODO need to change this according to the value of seekbar!!!
-//        double iMeter = iMiles * 1609.34;
-//        //circle.remove();
-//        circle = mMap.addCircle(new CircleOptions()
-//                .center(new LatLng(location.getLatitude(), location.getLongitude()))
-//                .radius(iMeter) // Converting Miles into Meters...
-//                .strokeColor(Color.RED)
-//                .strokeWidth(5));
-//        circle.isVisible();
-//        float currentZoomLevel = getZoomLevel(circle);
-//        float animateZomm = currentZoomLevel + 5;
-//
-//        Log.e("Zoom Level:", currentZoomLevel + "");
-//        Log.e("Zoom Level Animate:", animateZomm + "");
-//
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZomm));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
-//        Log.e("Circle Lat Long:", location.getLatitude() + ", " + location.getLongitude());
-
-
-//        //move map camera
-//        // TODO zoomTo change to kilometers: let zoom = getBaseLog(2, 40000 / (km / 2));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(2));
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -303,6 +274,7 @@ public class MapsActivity extends FragmentActivity implements
         Log.e("Zoom Level:", currentZoomLevel + "");
         Log.e("Zoom Level Animate:", animateZoom + "");
 
+        // Zoom could also be calculated: getBaseLog(2, 40000 / (km / 2))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), animateZoom));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(currentZoomLevel), 2000, null);
         Log.e("Circle Lat Long:", location.getLatitude() + ", " + location.getLongitude());
