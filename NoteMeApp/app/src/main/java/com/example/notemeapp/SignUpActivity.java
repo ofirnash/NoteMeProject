@@ -12,6 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.Request;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -20,6 +26,8 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -33,6 +41,8 @@ public class SignUpActivity extends AppCompatActivity {
     String loggedInUser;
     TextView text;
     TextView terms;
+
+    private static final String SERVER_ADDRESS = "http://192.168.1.55:8080/signup";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                     storeUserInSharedPreferences();
                     Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
 
-                    addToMongo();
+                    addToMongo(username,email,password);
                     Intent intent = new Intent(v.getContext(), MapsActivity.class);
                     startActivity(intent);
                 }
@@ -120,7 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
         loggedInUser = pref.getString("users_username", null); // getting String, Null if empty
     }
 
-    private void addToMongo() {
+    /*private void addToMongo() {
         try {
             MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/signup");
             MongoClient client = new MongoClient(uri);
@@ -141,5 +151,51 @@ public class SignUpActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }*/
+
+    public void addToMongo (EditText username, EditText email, EditText password){
+        String user = username.getText().toString();
+        String emailAddress = email.getText().toString();
+        String pass = password.getText().toString();
+        JSONObject postJSON = new JSONObject();
+        try {
+            postJSON.put("userName", user);
+            postJSON.put("email", emailAddress);
+            postJSON.put("password", pass);
+            System.out.println(postJSON);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS, postJSON, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueueFetcher.getInstance(this).getQueue().add(request);
     }
 }
