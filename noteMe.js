@@ -96,6 +96,42 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             })
         });
 
+        //getNote (based on the marker lat and long)
+        //TODO- the request seems to work, it returns the note details. The projection doesn't work for me, all the
+        //fields are being returned  
+        app.get('/getnote', (req,res,next) => {
+            console.log("Entered here");
+            let latitude = req.query.latitude;
+            let longitude = req.query.longitude;
+            let db = client.db("noteMeDB");
+            let query = {"latitude": latitude, "longitude":longitude};
+            let projection = {_id: 0, userName:0, title: 1, description: 1, image: 1, latitude: 0, longitude :0 };
+            console.log(query);
+            db.collection("notes").find(query,
+                projection).toArray(function(err,result){
+                    console.log(`Successfuly found ${result.length} notes`);
+                    result.forEach(console.log);
+                    if (err) throw err;
+                });
+            res.send("Returned note");
+            
+        });
+        
+        //getAllNotes (of a specific user)
+        app.get('/getallnotes', (req,res,next) => {
+            let userName = req.query.username;
+            let db = client.db("noteMeDB");
+            let query = {"userName": userName};
+            let projection = {_id: 0, userName:0, title: 1, description: 1, image: 1, latitude: 0, longitude :0 };
+            db.collection("notes").find(query,
+                projection).toArray(function(err,result){
+                    console.log(`Successfuly found ${result.length} notes`);
+                    result.forEach(console.log);
+                    if (err) throw err;
+                });
+            res.send(`Returned all notes of user ${userName}`);
+        });
+
         //addMarker
         app.post('/addmarker', (req,res,next) => {
             let latitude = req.body.latitude;
@@ -107,32 +143,22 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             };
 
             let db = client.db('noteMeDB');
+            db.collection('markers').insertOne(insertJSON, function(error,response){
+                res.json('Marker was added successfully');
+                console.log('Marker was added successfully');
+            })
+        });
 
-            //Check if marker exists
-            db.collection('markers')
-                .find({'latitude': latitude}).count(function(err,number){
-                    console.log(`Number = ${number}`);
-                    if (number == 0){
-                        db.collection('markers').insertOne(insertJSON, function(error,response){
-                            res.json('Marker was added successfully');
-                            console.log('Marker was added successfully');
-                        })
-                    } else {
-                        db.collection('markers')
-                            .find({'longitude': longitude}).count(function(err,number){
-                                if (number != 0){
-                                    res.json('Marker already exists');
-                                    console.log('Marker already exists');
-                                } else {
-                                    db.collection('markers').insertOne(insertJSON, function(error,response){
-                                        res.json('Marker was added successfully');
-                                        console.log('Marker was added successfully');
-                                    })
-                                }
-                            })
-                    }
-                });
-            
+        //getAllMarkers
+        app.get('/getallmarkers', (req,res,next) => {
+            let db = client.db("noteMeDB");
+            let projection = {_id: 0, latitude: 1, longitude :1 };
+            db.collection("markers").find({},projection).toArray(function(err,result){
+                    console.log(`Successfuly found ${result.length} markers`);
+                    console.log(result);
+                    if (err) throw err;
+            });
+            res.send("Returned all markers");
         });
 
         //Start Web Server
