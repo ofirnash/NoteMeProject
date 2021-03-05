@@ -66,12 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (!signUpData) {
                     Toast.makeText(getApplicationContext(), "Can't sign in. Make sure you have entered all data required properly", Toast.LENGTH_LONG).show();
                 } else {
-                    storeUserInSharedPreferences();
-                    Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
-
                     addToMongo(username,email,password);
-                    Intent intent = new Intent(v.getContext(), MapsActivity.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -171,7 +166,24 @@ public class SignUpActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                //TODO check if added or not
+                if(response.getBoolean("added")) {
+                    storeUserInSharedPreferences();
+                    Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    // User already exists
+                    Toast.makeText(getApplicationContext(), "User name already exists! Please login or sign up with a new user", Toast.LENGTH_LONG).show();
+                    // TODO: Test if it works, if not then remove the finish()
+                    // Refresh page
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                    startActivity(intent);
+                }
+                //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show(); WHAT IS THE OUTPUT OF THIS???
+                //return response.toString().contains("exists");
             }
         }, new Response.ErrorListener() {
             @Override

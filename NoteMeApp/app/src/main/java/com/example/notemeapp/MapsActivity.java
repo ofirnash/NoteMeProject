@@ -70,6 +70,8 @@ public class MapsActivity extends FragmentActivity implements
     EditText newNoteDescription;
     ImageView newNoteImage;
 
+    private static final String SERVER_ADDRESS = "http://192.168.1.55:8080/getallmarkers";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
