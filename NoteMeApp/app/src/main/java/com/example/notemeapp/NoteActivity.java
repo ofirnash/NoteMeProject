@@ -22,30 +22,24 @@ public class NoteActivity extends AppCompatActivity {
     Button sendBackToMapsBtn;
     LatLng markerPositionToExtract;
 
+    private static final String SERVER_ADDRESS = "http://192.168.1.55:8080/getnote";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
+        noteName = (TextView) findViewById(R.id.text_view_note_name);
+        noteDescription = (TextView) findViewById(R.id.text_view_note_description);
+        noteImage = (ImageView) findViewById(R.id.image_view_note);
         likeBtn = (ImageButton) findViewById(R.id.btn_like);
         sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
 
         markerPositionToExtract = getIntent().getExtras().getParcelable("Marker_Position_To_Extract"); // Example: lat/lng: (37.4759737583517,-122.12302297353743)
 
-        // TODO: Extract note by `markerPositionToExtract`: lat/long - We will need to extract title, description and image. Extract via lat and long from `markerPositionToExtract`
-        //                'user': user,
-        //                'title': title,
-        //                'description': description,
-        //                'image': image,
-        //                'latitude': latitude,
-        //                'longitude': longitude
+        getNoteFromDB();
 
-        noteName = (TextView) findViewById(R.id.text_view_note_name);
-        noteDescription = (TextView) findViewById(R.id.text_view_note_description);
-        noteImage = (ImageView) findViewById(R.id.image_view_note);
-
-        // TODO: Set text once extracted from DB and move to visible!!! This will be if the user doesn't enter anything. Default is invisible
-        // Set
+        // TODO: Set text once extracted from DB
         noteName.setText("BLA");
         noteDescription.setText("BLA");
         //noteImage.setImageResource();
@@ -66,5 +60,15 @@ public class NoteActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void getNoteFromDB(){
+        // TODO: Extract note by `markerPositionToExtract`: lat/long - We will need to extract title, description and image. Extract via lat and long from `markerPositionToExtract`
+        //                'user': user,
+        //                'title': title,
+        //                'description': description,
+        //                'image': image,
+        //                'latitude': latitude,
+        //                'longitude': longitude
     }
 }

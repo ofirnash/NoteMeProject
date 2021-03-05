@@ -166,8 +166,8 @@ public class SignUpActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                //TODO check if added or not
-                if(response.getBoolean("added")) {
+                //TODO test if works!
+                if(response.toString().contains("successfully")) {
                     storeUserInSharedPreferences();
                     Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
@@ -176,14 +176,13 @@ public class SignUpActivity extends AppCompatActivity {
                 else {
                     // User already exists
                     Toast.makeText(getApplicationContext(), "User name already exists! Please login or sign up with a new user", Toast.LENGTH_LONG).show();
-                    // TODO: Test if it works, if not then remove the finish()
+                    // TODO: Test if it clears the signuppage and refresh, if not remove finish()
                     // Refresh page
                     finish();
                     Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                     startActivity(intent);
                 }
                 //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show(); WHAT IS THE OUTPUT OF THIS???
-                //return response.toString().contains("exists");
             }
         }, new Response.ErrorListener() {
             @Override
