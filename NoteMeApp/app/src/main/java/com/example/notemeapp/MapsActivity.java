@@ -452,30 +452,37 @@ public class MapsActivity extends FragmentActivity implements
 
     private void getAllMarkersFromDB(){
         // TODO Use /getallmarkers SERVER_ADDRESS_GET_ALL_MARKERS
-        try {
-            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/addmarker");
-            MongoClient client = new MongoClient(uri);
-
-            MongoDatabase db = client.getDatabase(uri.getDatabase());
-            MongoCollection<BasicDBObject> collection = db.getCollection("markers", BasicDBObject.class);
-
-            // FIX!!!
-            BasicDBObject document = new BasicDBObject();
-            document.put("name", "mkyong");
-            document.put("age", 30);
-            collection.insertOne(document);
-
-            MongoCursor iterator = collection.find().iterator();
-
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-                addMarkerToMap(443.432423432, 224423423.44); // TODO Retrieve from the iterator??
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_ALL_MARKERS, null, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                // TODO SEND MARKERS TO addMarkerToMap
+                addMarkerToMap(35244234,4432423);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
 
+        });
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueueFetcher.getInstance(this).getQueue().add(request);
+    }
 
     private void addMarkerToMap(double latitudePos, double longitudePos){
         // Creating a marker
