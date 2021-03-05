@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -26,9 +27,12 @@ public class NoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
+        likeBtn = (ImageButton) findViewById(R.id.btn_like);
+        sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
+
         markerPositionToExtract = getIntent().getExtras().getParcelable("Marker_Position_To_Extract"); // Example: lat/lng: (37.4759737583517,-122.12302297353743)
 
-        // TODO: Extract note by markerPositionToExtract: lat/long -
+        // TODO: Extract note by `markerPositionToExtract`: lat/long - We will need to extract title, description and image. Extract via lat and long from `markerPositionToExtract`
         //                'user': user,
         //                'title': title,
         //                'description': description,
@@ -47,16 +51,15 @@ public class NoteActivity extends AppCompatActivity {
         //noteImage.setImageResource();
 
         // Like button
-        likeBtn = (ImageButton) findViewById(R.id.btn_like);
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                Toast.makeText(getApplicationContext(), "Liked!", Toast.LENGTH_LONG).show();
                 // TODO: Implement +1 to like in DB
             }
         });
 
         // Back to Maps
-        sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
         sendBackToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
