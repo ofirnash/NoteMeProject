@@ -34,7 +34,7 @@ public class NoteActivity extends AppCompatActivity {
     LatLng markerPositionToExtract;
 
     private static final String SERVER_ADDRESS_GET_NOTE = "http://192.168.1.55:8080/getnote";
-    private static final String SERVER_ADDRESS_ADD_LIKE = "http://192.168.1.55:8080/getnote";
+    private static final String SERVER_ADDRESS_ADD_LIKE = "http://192.168.1.55:8080/addlike";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
