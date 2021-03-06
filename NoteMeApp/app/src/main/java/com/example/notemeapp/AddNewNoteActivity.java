@@ -116,7 +116,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
                 }
 
                 break;
-            /*case 1:
+            case 1:
                 if(resultCode == RESULT_OK){
                     extras = imageReturnedIntent.getExtras();
                     imageBitmap = (Bitmap) extras.get("data");
@@ -126,7 +126,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
 //                    Uri selectedImage = imageReturnedIntent.getData();
 //                    photoChosen.setImageURI(selectedImage);
                 }
-                break;*/
+                break;
         }
     }
 
