@@ -57,7 +57,6 @@ public class SignUpActivity extends AppCompatActivity {
         confirmPass = (EditText) findViewById(R.id.text_confirm_password_sign_up);
 
         // SignUp Successful-> Send to Maps
-        // TODO: Need verification for SignUp credentials
         signUp = (Button) findViewById(R.id.btn_sign_up);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +142,6 @@ public class SignUpActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                //TODO test if works!
                 if(response.toString().contains("successfully")) {
                     storeUserInSharedPreferences();
                     Toast.makeText(getApplicationContext(), String.format("Welcome: %s!", loggedInUser), Toast.LENGTH_LONG).show();
@@ -153,7 +151,6 @@ public class SignUpActivity extends AppCompatActivity {
                 else {
                     // User already exists
                     Toast.makeText(getApplicationContext(), "User name already exists! Please login or sign up with a new user", Toast.LENGTH_LONG).show();
-                    // TODO: Test if it clears the signuppage and refresh, if not remove finish()
                     // Refresh page
                     finish();
                     Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);

@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Login Successful-> Send to Maps
-        // TODO: Need verification for login credentials (username + password) are good!!!
         sendToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkMatchingAccountInDB(){
-        //TODO: Check matching credentials in DB
+        //TODO: Check matching credentials in DB REMOVE???
         return true; // FOR TESTING! REMOVE
 //        try {
 //            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/login");
@@ -136,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                //TODO test if works!!!
                 if(response.toString().contains("successfully")) {
                     storeUserInSharedPreferences();
                     Toast.makeText(getApplicationContext(), String.format("Welcome back: %s!", loggedInUser), Toast.LENGTH_LONG).show();
@@ -146,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     // Credentials don't match or user doesn't exist
                     Toast.makeText(getApplicationContext(), "The username or password you’ve entered doesn’t match any account.", Toast.LENGTH_LONG).show();
-                    // TODO: Test if it works, if not then remove the finish()
                     // Refresh page
                     finish();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);

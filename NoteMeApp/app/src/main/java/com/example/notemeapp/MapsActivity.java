@@ -119,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                // TODO Auto-generated method stub
                 //seekBarValue.setText(String.valueOf(progress));
                 iMiles = 100 - progress; // Handle reversed seekBar
                 Log.e("level", String.valueOf(progress));
@@ -128,12 +127,12 @@ public class MapsActivity extends FragmentActivity implements
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+
             }
         });
     }
@@ -170,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // TODO send to AddNewNoteActivity the marker in order to extract, send marker.getPosition() - DONE?
+        // TODO send to AddNewNoteActivity the marker in order to extract, send marker.getPosition() - NOTEACTIVITY instead of ADDNEWNOTE?
         Intent intent = new Intent(this, AddNewNoteActivity.class);
         intent.putExtra("Marker_Position_To_Extract", marker.getPosition());
         Log.e("Marker is + " ,marker.getPosition().toString());
@@ -180,20 +179,14 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-        // New Marker!
-
-        // Creating a marker
+        // Creating a New Marker
         MarkerOptions markerOptions = new MarkerOptions();
 
         // Setting the position for the marker
         markerOptions.position(latLng);
 
         // Setting the title for the marker.
-        // This will be displayed on taping the marker
         markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-
-        // Clears the previously touched position
-        //mMap.clear();
 
         // Animating to the touched position
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -268,7 +261,6 @@ public class MapsActivity extends FragmentActivity implements
         if (circle!= null){
             circle.remove();
         }
-        //circle.remove();
         circle = mMap.addCircle(new CircleOptions()
                 .center(new LatLng(location.getLatitude(), location.getLongitude()))
                 .radius(iMeter) // Converting Miles into Meters...
@@ -371,31 +363,6 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-//    private void addMarkerToDB(LatLng latLng){
-//        latLng.latitude + " : " + latLng.longitude
-//        try {
-//            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/addmarker");
-//            MongoClient client = new MongoClient(uri);
-//
-//            MongoDatabase db = client.getDatabase(uri.getDatabase());
-//            MongoCollection<BasicDBObject> collection = db.getCollection("markers", BasicDBObject.class);
-//
-//            // FIX!!!
-//            BasicDBObject document = new BasicDBObject();
-//            document.put("name", "mkyong");
-//            document.put("age", 30);
-//            collection.insertOne(document);
-//
-//            MongoCursor iterator = collection.find().iterator();
-//
-//            while (iterator.hasNext()) {
-//                System.out.println(iterator.next());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private void addMarkerToDB (LatLng latLng){
         double latitude = latLng.latitude;
         double longitude = latLng.longitude;
@@ -412,7 +379,6 @@ public class MapsActivity extends FragmentActivity implements
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS_ADD_MARKER, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                //TODO test if works!!!
                 if(response.toString().contains("successfully")) {
                     Toast.makeText(getApplicationContext(), "Marker added!", Toast.LENGTH_LONG).show();
                 }
@@ -489,14 +455,7 @@ public class MapsActivity extends FragmentActivity implements
         markerOptions.position(new LatLng(latitudePos, longitudePos));
 
         // Setting the title for the marker.
-        // This will be displayed on taping the marker
         markerOptions.title(latitudePos + " : " + longitudePos);
-
-        // Clears the previously touched position
-        //mMap.clear();
-
-        // Animating to the touched position
-        //mMap.animateCamera(CameraUpdateFactory.newLatLng(markerPositionLatlng));
 
         // Placing a marker on the touched position
         mMap.addMarker(markerOptions);
