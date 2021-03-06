@@ -1,10 +1,12 @@
 package com.example.notemeapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +36,9 @@ public class MyProfileActivity extends AppCompatActivity {
     SharedPreferences pref;
     String loggedInUser;
     RecyclerView recyclerView;
+    List<String> myNotesTitles;
+    List<String> myNotesDescriptions;
+    MyProfileAdapter adapter;
 
     private static final String SERVER_ADDRESS_GET_ALL_NOTES = "http://192.168.1.55:8080/getallnotes";
 
@@ -43,7 +49,6 @@ public class MyProfileActivity extends AppCompatActivity {
 
         goBackBtn = (Button)findViewById(R.id.btn_send_back_from_profile);
 
-        //TODO: Set up adapter!!!
         recyclerView = (RecyclerView)findViewById(R.id.my_notes_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true); // For improved performance
@@ -66,7 +71,6 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void getAllMyNotesFromDB(){
-        // TODO  Fetch from DB all of my posts according to my username!!!
         JSONObject postJSON = new JSONObject();
         try {
             postJSON.put("username", loggedInUser);
@@ -77,12 +81,28 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_ALL_NOTES, postJSON, new Response.Listener<JSONObject>(){
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(JSONObject response) {
-                // TODO: Get all user's Notes - Will need to trigger Adapter!!!! Gets titles,description..
-                //List<String> lannisterListCharacters = Arrays.asList(getResources().getStringArray(R.array.lannister_characters_names));
-                //MyProfileAdapter adapter = new MyProfileAdapter(lannisterListCharacters, title, description);
-                //recyclerView.setAdapter(adapter);
+                try
+                {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for(int i=0;i<jsonArray.length();i++)
+                    {
+                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                        String noteTitleValue = jsonObject1.optString("title");
+                        String noteDescriptionValue = jsonObject1.optString("description");
+                        myNotesTitles.add(noteTitleValue);
+                        myNotesDescriptions.add(noteDescriptionValue);
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+                adapter = new MyProfileAdapter(myNotesTitles, myNotesDescriptions);
+                recyclerView.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
