@@ -206,6 +206,8 @@ public class MapsActivity extends FragmentActivity implements
         Log.e("Marker is + " ,markerOptions.getPosition().toString());
         startActivity(intent);
         //finish();
+
+        addMarkerToDB(latLng);
     }
 
     protected synchronized void buildGoogleApiClient() {
