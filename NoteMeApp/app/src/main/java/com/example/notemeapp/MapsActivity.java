@@ -23,6 +23,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -45,6 +50,9 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MapsActivity extends FragmentActivity implements
@@ -70,7 +78,8 @@ public class MapsActivity extends FragmentActivity implements
     EditText newNoteDescription;
     ImageView newNoteImage;
 
-    private static final String SERVER_ADDRESS = "http://192.168.1.55:8080/getallmarkers";
+    private static final String SERVER_ADDRESS_GET_ALL_MARKERS = "http://192.168.1.55:8080/getallmarkers";
+    private static final String SERVER_ADDRESS_ADD_MARKER = "http://192.168.1.55:8080/addmarker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +151,8 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMarkerClickListener(this);
 
         //TODO: Load markers from DB
+        getAllMarkersFromDB();
+        //for ()
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -195,7 +206,6 @@ public class MapsActivity extends FragmentActivity implements
         Log.e("Marker is + " ,markerOptions.getPosition().toString());
         startActivity(intent);
         //finish();
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -359,27 +369,134 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    private void addMarkerToDB(LatLng latLng){
+//    private void addMarkerToDB(LatLng latLng){
+//        latLng.latitude + " : " + latLng.longitude
+//        try {
+//            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/addmarker");
+//            MongoClient client = new MongoClient(uri);
+//
+//            MongoDatabase db = client.getDatabase(uri.getDatabase());
+//            MongoCollection<BasicDBObject> collection = db.getCollection("markers", BasicDBObject.class);
+//
+//            // FIX!!!
+//            BasicDBObject document = new BasicDBObject();
+//            document.put("name", "mkyong");
+//            document.put("age", 30);
+//            collection.insertOne(document);
+//
+//            MongoCursor iterator = collection.find().iterator();
+//
+//            while (iterator.hasNext()) {
+//                System.out.println(iterator.next());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    private void addMarkerToDB (LatLng latLng){
+        double latitude = latLng.latitude;
+        double longitude = latLng.longitude;
+        JSONObject postJSON = new JSONObject();
         try {
-            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/addmarker");
-            MongoClient client = new MongoClient(uri);
+            postJSON.put("latitude", latitude);
+            postJSON.put("longitude", longitude);
+            System.out.println(postJSON);
 
-            MongoDatabase db = client.getDatabase(uri.getDatabase());
-            MongoCollection<BasicDBObject> collection = db.getCollection("markers", BasicDBObject.class);
-
-            // FIX!!!
-            BasicDBObject document = new BasicDBObject();
-            document.put("name", "mkyong");
-            document.put("age", 30);
-            collection.insertOne(document);
-
-            MongoCursor iterator = collection.find().iterator();
-
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS_ADD_MARKER, postJSON, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                //TODO test if works!!!
+                if(response.toString().contains("successfully")) {
+                    Toast.makeText(getApplicationContext(), "Marker added!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // Error
+                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueueFetcher.getInstance(this).getQueue().add(request);
+    }
+
+    private void getAllMarkersFromDB(){
+        // TODO Use /getallmarkers SERVER_ADDRESS_GET_ALL_MARKERS
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_ALL_MARKERS, null, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                // TODO SEND MARKERS TO addMarkerToMap
+                addMarkerToMap(35244234,4432423);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueueFetcher.getInstance(this).getQueue().add(request);
+    }
+
+    private void addMarkerToMap(double latitudePos, double longitudePos){
+        // Creating a marker
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        // Setting the position for the marker
+        markerOptions.position(new LatLng(latitudePos, longitudePos));
+
+        // Setting the title for the marker.
+        // This will be displayed on taping the marker
+        markerOptions.title(latitudePos + " : " + longitudePos);
+
+        // Clears the previously touched position
+        //mMap.clear();
+
+        // Animating to the touched position
+        //mMap.animateCamera(CameraUpdateFactory.newLatLng(markerPositionLatlng));
+
+        // Placing a marker on the touched position
+        mMap.addMarker(markerOptions);
     }
 }

@@ -12,7 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class NoteActivity extends AppCompatActivity {
     TextView noteName;
@@ -22,33 +30,22 @@ public class NoteActivity extends AppCompatActivity {
     Button sendBackToMapsBtn;
     LatLng markerPositionToExtract;
 
+    private static final String SERVER_ADDRESS_GET_NOTE = "http://192.168.1.55:8080/getnote";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
+        noteName = (TextView) findViewById(R.id.text_view_note_name);
+        noteDescription = (TextView) findViewById(R.id.text_view_note_description);
+        noteImage = (ImageView) findViewById(R.id.image_view_note);
         likeBtn = (ImageButton) findViewById(R.id.btn_like);
         sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
 
         markerPositionToExtract = getIntent().getExtras().getParcelable("Marker_Position_To_Extract"); // Example: lat/lng: (37.4759737583517,-122.12302297353743)
 
-        // TODO: Extract note by `markerPositionToExtract`: lat/long - We will need to extract title, description and image. Extract via lat and long from `markerPositionToExtract`
-        //                'user': user,
-        //                'title': title,
-        //                'description': description,
-        //                'image': image,
-        //                'latitude': latitude,
-        //                'longitude': longitude
-
-        noteName = (TextView) findViewById(R.id.text_view_note_name);
-        noteDescription = (TextView) findViewById(R.id.text_view_note_description);
-        noteImage = (ImageView) findViewById(R.id.image_view_note);
-
-        // TODO: Set text once extracted from DB and move to visible!!! This will be if the user doesn't enter anything. Default is invisible
-        // Set
-        noteName.setText("BLA");
-        noteDescription.setText("BLA");
-        //noteImage.setImageResource();
+        getNoteFromDB();
 
         // Like button
         likeBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,5 +63,59 @@ public class NoteActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void getNoteFromDB(){
+        // TODO: Extract note by `markerPositionToExtract`: lat/long - We will need to extract title, description and image. Extract via lat and long from `markerPositionToExtract`
+        //                'user': user,
+        //                'title': title,
+        //                'description': description,
+        //                'image': image,
+        //                'latitude': latitude,
+        //                'longitude': longitude
+        double latitude = markerPositionToExtract.latitude;
+        double longitude = markerPositionToExtract.longitude;
+        JSONObject postJSON = new JSONObject();
+        try {
+            postJSON.put("latitude", latitude);
+            postJSON.put("longitude", longitude);
+            System.out.println(postJSON);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_NOTE, postJSON, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                // TODO: Set text once extracted from DB
+                noteName.setText("BLA");
+                noteDescription.setText("BLA");
+                //noteImage.setImageResource();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueueFetcher.getInstance(this).getQueue().add(request);
     }
 }

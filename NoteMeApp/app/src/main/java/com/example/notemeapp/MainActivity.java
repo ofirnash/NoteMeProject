@@ -136,15 +136,15 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                //TODO check if credentials match
-                if(response.getBoolean("added")) {
+                //TODO test if works!!!
+                if(response.toString().contains("successfully")) {
                     storeUserInSharedPreferences();
                     Toast.makeText(getApplicationContext(), String.format("Welcome back: %s!", loggedInUser), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    // Credentials don't match
+                    // Credentials don't match or user doesn't exist
                     Toast.makeText(getApplicationContext(), "The username or password you’ve entered doesn’t match any account.", Toast.LENGTH_LONG).show();
                     // TODO: Test if it works, if not then remove the finish()
                     // Refresh page
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }
-                //return response.toString().contains("exists");
             }
         }, new Response.ErrorListener() {
             @Override
