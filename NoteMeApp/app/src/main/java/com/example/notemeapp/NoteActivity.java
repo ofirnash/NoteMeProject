@@ -73,7 +73,7 @@ public class NoteActivity extends AppCompatActivity {
             }
         });
 
-        // Back to Maps
+        // Send back to Maps
         sendBackToMapsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
