@@ -48,7 +48,6 @@ public class MyProfileActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true); // For improved performance
 
-        //TODO: Fetch from DB all of my posts according to my username
         loggedInUser = getLoggedInUser();
         getAllMyNotesFromDB();
 
@@ -67,7 +66,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void getAllMyNotesFromDB(){
-        // TODO!!!
+        // TODO  Fetch from DB all of my posts according to my username!!!
         JSONObject postJSON = new JSONObject();
         try {
             postJSON.put("username", loggedInUser);
@@ -80,9 +79,7 @@ public class MyProfileActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_ALL_NOTES, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                // TODO: Get all user's Notes - Will need to trigger Adapter!!!!
-
-                // TODO: Get from DB titles, descriptions...
+                // TODO: Get all user's Notes - Will need to trigger Adapter!!!! Gets titles,description..
                 //List<String> lannisterListCharacters = Arrays.asList(getResources().getStringArray(R.array.lannister_characters_names));
                 //MyProfileAdapter adapter = new MyProfileAdapter(lannisterListCharacters, title, description);
                 //recyclerView.setAdapter(adapter);
