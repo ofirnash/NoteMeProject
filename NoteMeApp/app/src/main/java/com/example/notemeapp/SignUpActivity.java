@@ -156,7 +156,6 @@ public class SignUpActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                     startActivity(intent);
                 }
-                //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show(); WHAT IS THE OUTPUT OF THIS???
             }
         }, new Response.ErrorListener() {
             @Override

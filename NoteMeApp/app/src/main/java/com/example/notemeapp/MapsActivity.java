@@ -69,7 +69,6 @@ public class MapsActivity extends FragmentActivity implements
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    Marker[] allMarkers; // In order hide markers outside of radius, do we want?
     LocationRequest mLocationRequest;
     Circle circle;
     double iMiles = 100; // Initializer
@@ -77,9 +76,6 @@ public class MapsActivity extends FragmentActivity implements
     ImageButton sendToMyProfileBtn;
     SharedPreferences pref;
     String loggedInUser;
-    EditText newNoteName;
-    EditText newNoteDescription;
-    ImageView newNoteImage;
 
     private static final String SERVER_ADDRESS_GET_ALL_MARKERS = "http://192.168.1.55:8080/getallmarkers";
     private static final String SERVER_ADDRESS_ADD_MARKER = "http://192.168.1.55:8080/addmarker";
@@ -122,7 +118,6 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                //seekBarValue.setText(String.valueOf(progress));
                 iMiles = 100 - progress; // Handle reversed seekBar
                 Log.e("level", String.valueOf(progress));
                 zoomInOutCamera(mLastLocation);
