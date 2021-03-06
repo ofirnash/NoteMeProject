@@ -86,7 +86,8 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
                 'description': description,
                 'image': image,
                 'latitude': latitude,
-                'longitude': longitude
+                'longitude': longitude,
+                'likes': 0
             };
 
             let db = client.db('noteMeDB');
@@ -98,24 +99,24 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
 
         //getNote (based on the marker lat and long)
         app.get('/getnote', (req,res,next) => {
-            console.log("Entered here");
             let latitude = req.query.latitude;
             let longitude = req.query.longitude;
             let db = client.db("noteMeDB");
             let query = {"latitude": latitude, "longitude":longitude};
-            let projection = {_id: 0, userName:0, title: 1, description: 1, image: 1, latitude: 0, longitude :0 };
             console.log(query);
             let resJSON = "";
-            db.collection("notes").find(query,
-                projection).toArray(function(err,result){
-                    console.log(`Successfuly found ${result.length} notes`);
-                    console.log(result);
-                    resJSON = JSON.stringify(result);
-                    console.log(`resJSON = ${resJSON}`);
+            db.collection("notes").find(query).toArray(function(err,result){
+                    if (result.length != 0){
+                        console.log(`Successfuly found ${result.length} notes`);
+                        console.log(result);
+                        resJSON = JSON.stringify(result);
+                        console.log(`resJSON = ${resJSON}`);
+                    } else {
+                        console.log("Couldn't find note");
+                    }
                     if (err) throw err;
                 });
             res.send(resJSON);
-            
         });
         
         //getAllNotes (of a specific user)
@@ -123,10 +124,8 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             let userName = req.query.username;
             let db = client.db("noteMeDB");
             let query = {"userName": userName};
-            let projection = {_id: 0, userName:0, title: 1, description: 1, image: 1, latitude: 0, longitude :0 };
             let resJSON = "";
-            db.collection("notes").find(query,
-                projection).toArray(function(err,result){
+            db.collection("notes").find(query).toArray(function(err,result){
                     console.log(`Successfuly found ${result.length} notes`);
                     console.log(result);
                     resJSON = JSON.stringify(result);
@@ -156,9 +155,8 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
         //getAllMarkers
         app.get('/getallmarkers', (req,res,next) => {
             let db = client.db("noteMeDB");
-            let projection = {_id: 0, latitude: 1, longitude :1 };
             let resJSON = "";
-            db.collection("markers").find({},projection).toArray(function(err,result){
+            db.collection("markers").find({}).toArray(function(err,result){
                     console.log(`Successfuly found ${result.length} markers`);
                     console.log(result);
                     resJSON = JSON.stringify(result);
@@ -166,6 +164,32 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
                     if (err) throw err;
             });
             res.send(resJSON);
+        });
+
+        //addLike
+        app.put('/addlike', (req,res,next) => {
+            let latitude = req.query.latitude;
+            let longitude = req.query.longitude;
+            let db = client.db("noteMeDB");
+            let query = {"latitude": latitude, "longitude":longitude};
+            let newValue = {$inc: {likes: 1}};
+            db.collection("notes").updateOne(query,newValue, function(err,res){
+                if (err) throw err;
+                console.log("Note likes counter was increased by 1");
+            });
+        });
+
+        //removeLike
+        app.put('/removelike', (req,res,next) => {
+            let latitude = req.query.latitude;
+            let longitude = req.query.longitude;
+            let db = client.db("noteMeDB");
+            let query = {"latitude": latitude, "longitude":longitude};
+            let newValue = {$inc: {likes: -1}};
+            db.collection("notes").updateOne(query,newValue, function(err,res){
+                if (err) throw err;
+                console.log("Note likes counter was decreased by 1");
+            });
         });
 
         //Start Web Server
