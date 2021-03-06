@@ -81,32 +81,6 @@ public class MainActivity extends AppCompatActivity {
         return allowLogin;
     }
 
-    private boolean checkMatchingAccountInDB(){
-        //TODO: Check matching credentials in DB REMOVE???
-        return true; // FOR TESTING! REMOVE
-//        try {
-//            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/login");
-//            MongoClient client = new MongoClient(uri);
-//
-//            MongoDatabase db = client.getDatabase(uri.getDatabase());
-//            MongoCollection<BasicDBObject> collection = db.getCollection("users", BasicDBObject.class);
-//
-//            // FIX!!!
-//            BasicDBObject document = new BasicDBObject();
-//            document.put("name", "mkyong");
-//            document.put("age", 30);
-//            collection.insertOne(document);
-//
-//            MongoCursor iterator = collection.find().iterator();
-//
-//            while (iterator.hasNext()) {
-//                System.out.println(iterator.next());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
-
     private void storeUserInSharedPreferences(){
         pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         editor = pref.edit();

@@ -149,9 +149,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
 
-        //TODO: Load markers from DB
         getAllMarkersFromDB();
-        //for ()
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -169,8 +167,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // TODO send to AddNewNoteActivity the marker in order to extract, send marker.getPosition() - NOTEACTIVITY instead of ADDNEWNOTE?
-        Intent intent = new Intent(this, AddNewNoteActivity.class);
+        Intent intent = new Intent(this, NoteActivity.class);
         intent.putExtra("Marker_Position_To_Extract", marker.getPosition());
         Log.e("Marker is + " ,marker.getPosition().toString());
         startActivity(intent);
@@ -414,7 +411,6 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void getAllMarkersFromDB(){
-        // TODO Use /getallmarkers SERVER_ADDRESS_GET_ALL_MARKERS
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_ALL_MARKERS, null, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
