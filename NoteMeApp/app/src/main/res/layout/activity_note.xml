@@ -62,9 +62,25 @@
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/btn_back_to_maps"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_view_note"
+        app:layout_constraintVertical_bias="0.473"
         app:srcCompat="@drawable/like" />
+
+    <ImageButton
+        android:id="@+id/btn_unlike"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/btn_back_to_maps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.638"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_note"
+        app:layout_constraintVertical_bias="0.473"
+        app:srcCompat="@drawable/unlike_removebg_preview" />
 
     <TextView
         android:id="@+id/text_view_note_likes_num"

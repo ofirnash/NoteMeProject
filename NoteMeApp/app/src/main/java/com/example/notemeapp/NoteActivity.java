@@ -30,11 +30,13 @@ public class NoteActivity extends AppCompatActivity {
     TextView noteLikesNum;
     ImageView noteImage;
     ImageButton likeBtn;
+    ImageButton unlikeBtn;
     Button sendBackToMapsBtn;
     LatLng markerPositionToExtract;
 
     private static final String SERVER_ADDRESS_GET_NOTE = "http://192.168.1.55:8080/getnote";
     private static final String SERVER_ADDRESS_ADD_LIKE = "http://192.168.1.55:8080/addlike";
+    private static final String SERVER_ADDRESS_REMOVE_LIKE = "http://192.168.1.55:8080/removelike";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class NoteActivity extends AppCompatActivity {
         noteLikesNum = (TextView) findViewById(R.id.text_view_note_likes_num);
         noteImage = (ImageView) findViewById(R.id.image_view_note);
         likeBtn = (ImageButton) findViewById(R.id.btn_like);
+        unlikeBtn = (ImageButton) findViewById(R.id.btn_unlike);
         sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
 
         markerPositionToExtract = getIntent().getExtras().getParcelable("Marker_Position_To_Extract"); // Example: lat/lng: (37.4759737583517,-122.12302297353743)
@@ -56,8 +59,16 @@ public class NoteActivity extends AppCompatActivity {
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                // TODO: Implement +1 to like in DB
                 addLikeToDB();
+            }
+        });
+
+        // unlike button
+        unlikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                removeLikeFromDB();
+
             }
         });
 
@@ -123,23 +134,66 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void addLikeToDB(){
-        // TODO: How would we want to find the note? Currently did by lat,long - change if needed
         double latitude = markerPositionToExtract.latitude;
         double longitude = markerPositionToExtract.longitude;
-        JSONObject postJSON = new JSONObject();
+        JSONObject putJSON = new JSONObject();
         try {
-            postJSON.put("latitude", latitude);
-            postJSON.put("longitude", longitude);
-            System.out.println(postJSON);
+            putJSON.put("latitude", latitude);
+            putJSON.put("longitude", longitude);
+            System.out.println(putJSON);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVER_ADDRESS_ADD_LIKE, postJSON, new Response.Listener<JSONObject>(){
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, SERVER_ADDRESS_ADD_LIKE, putJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
                 Toast.makeText(getApplicationContext(), "Liked!", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueueFetcher.getInstance(this).getQueue().add(request);
+    }
+
+    private void removeLikeFromDB(){
+        double latitude = markerPositionToExtract.latitude;
+        double longitude = markerPositionToExtract.longitude;
+        JSONObject putJSON = new JSONObject();
+        try {
+            putJSON.put("latitude", latitude);
+            putJSON.put("longitude", longitude);
+            System.out.println(putJSON);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, SERVER_ADDRESS_REMOVE_LIKE, putJSON, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplicationContext(), "Unliked!", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
