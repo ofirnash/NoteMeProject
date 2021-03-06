@@ -23,7 +23,6 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
                 'userName': userName,
                 'password': password
             };
-            console.log(insertJSON);
             let db = client.db('noteMeDB');
             
             //Check if username already exists in DB (username should be unique)
@@ -44,7 +43,6 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
 
         //Login
         app.post('/login',(req,res,next) => {
-            console.log(req);
             let userName = req.body.userName;
             let password = req.body.password;
 
@@ -103,14 +101,11 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             let longitude = req.query.longitude;
             let db = client.db("noteMeDB");
             let query = {"latitude": latitude, "longitude":longitude};
-            console.log(query);
             let resJSON = "";
             db.collection("notes").find(query).toArray(function(err,result){
                     if (result.length != 0){
                         console.log(`Successfuly found ${result.length} notes`);
-                        console.log(result);
                         resJSON = JSON.stringify(result);
-                        console.log(`resJSON = ${resJSON}`);
                     } else {
                         console.log("Couldn't find note");
                     }
@@ -127,9 +122,7 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             let resJSON = "";
             db.collection("notes").find(query).toArray(function(err,result){
                     console.log(`Successfuly found ${result.length} notes`);
-                    console.log(result);
                     resJSON = JSON.stringify(result);
-                    console.log(resJSON);
                     if (err) throw err;
                 });
             res.send(resJSON);
@@ -158,9 +151,7 @@ MongoClient.connect(MONGO_URL, {useNewUrlParser:true}, function(err,client){
             let resJSON = "";
             db.collection("markers").find({}).toArray(function(err,result){
                     console.log(`Successfuly found ${result.length} markers`);
-                    console.log(result);
                     resJSON = JSON.stringify(result);
-                    console.log(resJSON);
                     if (err) throw err;
             });
             res.send(resJSON);
