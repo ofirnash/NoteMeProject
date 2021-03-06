@@ -170,9 +170,10 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // TODO send to NoteActivity the marker in order to extract, send marker.getPosition() - DONE?
-        Intent intent = new Intent(this, NoteActivity.class);
+        // TODO send to AddNewNoteActivity the marker in order to extract, send marker.getPosition() - DONE?
+        Intent intent = new Intent(this, AddNewNoteActivity.class);
         intent.putExtra("Marker_Position_To_Extract", marker.getPosition());
+        Log.e("Marker is + " ,marker.getPosition().toString());
         startActivity(intent);
         return false;
     }
@@ -201,16 +202,10 @@ public class MapsActivity extends FragmentActivity implements
         mMap.addMarker(markerOptions);
 
         Intent intent = new Intent(this, AddNewNoteActivity.class);
+        intent.putExtra("Marker_Position_To_Extract", markerOptions.getPosition());
+        Log.e("Marker is + " ,markerOptions.getPosition().toString());
         startActivity(intent);
         //finish();
-
-        // Fetch new note's data to add to DB - NOT NEEDED!!! Will handle this in addnewnoteactivity
-//        newNoteName = (EditText) findViewById(R.id.text_new_note_name);
-//        newNoteDescription = (EditText) findViewById(R.id.text_new_note_description);
-//        newNoteImage = (ImageView) findViewById(R.id.image_view_new_photo_uploaded);
-
-        //TODO: add marker to DB - TEST
-        addMarkerToDB(latLng);
     }
 
     protected synchronized void buildGoogleApiClient() {
