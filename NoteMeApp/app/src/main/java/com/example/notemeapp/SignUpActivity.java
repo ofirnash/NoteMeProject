@@ -130,29 +130,6 @@ public class SignUpActivity extends AppCompatActivity {
         loggedInUser = pref.getString("users_username", null); // getting String, Null if empty
     }
 
-    /*private void addToMongo() {
-        try {
-            MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017/signup");
-            MongoClient client = new MongoClient(uri);
-
-            MongoDatabase db = client.getDatabase(uri.getDatabase());
-            MongoCollection<BasicDBObject> collection = db.getCollection("salam", BasicDBObject.class);
-
-            BasicDBObject document = new BasicDBObject();
-            document.put("name", "mkyong");
-            document.put("age", 30);
-            collection.insertOne(document);
-
-            MongoCursor iterator = collection.find().iterator();
-
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public void addToMongo (EditText username, EditText email, EditText password){
         String user = username.getText().toString();
         String emailAddress = email.getText().toString();
