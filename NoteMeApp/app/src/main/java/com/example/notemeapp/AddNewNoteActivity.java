@@ -2,9 +2,11 @@ package com.example.notemeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -24,11 +26,15 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+
 public class AddNewNoteActivity extends AppCompatActivity {
     Button createNoteBtn;
     Button takePhotoBtn;
     Button uploadPhotoBtn;
     ImageView photoChosen;
+    Uri photoChosenUri;
     EditText title;
     EditText description;
     String loggedInUser;
@@ -84,9 +90,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
                     Log.d("New note position + ", notePosition.toString());
                     double latitude = notePosition.latitude;
                     double longitude = notePosition.longitude;
-                    //TODO: See how to pass the image to the DB if exists
-                    String image = "x";
-                    addToMongo(loggedInUser,title,description,image,latitude,longitude);
+                    addToMongo(loggedInUser,title,description,photoChosenUri,latitude,longitude);
                     Toast.makeText(getApplicationContext(), "Note Created!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(v.getContext(), MapsActivity.class);
                     startActivity(intent);
@@ -110,27 +114,31 @@ public class AddNewNoteActivity extends AppCompatActivity {
                     extras = imageReturnedIntent.getExtras();
                     imageBitmap = (Bitmap) extras.get("data");
                     photoChosen.setImageBitmap(imageBitmap);
-                    //Uri selectedImage = imageReturnedIntent.getData();
-                    // photoChosen.setImageURI(selectedImage);
+                    photoChosenUri = getImageUri(imageBitmap);
                     photoChosen.setVisibility(View.VISIBLE);
                 }
-
                 break;
+
             case 1:
                 if(resultCode == RESULT_OK){
                     extras = imageReturnedIntent.getExtras();
                     imageBitmap = (Bitmap) extras.get("data");
                     photoChosen.setImageBitmap(imageBitmap);
+                    photoChosenUri = getImageUri(imageBitmap);
                     photoChosen.setVisibility(View.VISIBLE);
-
-//                    Uri selectedImage = imageReturnedIntent.getData();
-//                    photoChosen.setImageURI(selectedImage);
                 }
                 break;
         }
     }
 
-    public void addToMongo (String username, EditText noteTitle, EditText noteDescription, String noteImage,
+    private Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public void addToMongo (String username, EditText noteTitle, EditText noteDescription, Uri noteImage,
                             double lat, double longi){
         String title = noteTitle.getText().toString();
         String description = noteDescription.getText().toString();
