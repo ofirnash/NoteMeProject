@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,6 +27,7 @@ import org.json.JSONObject;
 public class NoteActivity extends AppCompatActivity {
     TextView noteName;
     TextView noteDescription;
+    TextView noteLikesNum;
     ImageView noteImage;
     ImageButton likeBtn;
     Button sendBackToMapsBtn;
@@ -39,6 +42,7 @@ public class NoteActivity extends AppCompatActivity {
 
         noteName = (TextView) findViewById(R.id.text_view_note_name);
         noteDescription = (TextView) findViewById(R.id.text_view_note_description);
+        noteLikesNum = (TextView) findViewById(R.id.text_view_note_likes_num);
         noteImage = (ImageView) findViewById(R.id.image_view_note);
         likeBtn = (ImageButton) findViewById(R.id.btn_like);
         sendBackToMapsBtn = (Button)findViewById(R.id.btn_back_to_maps);
@@ -66,13 +70,6 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void getNoteFromDB(){
-        // TODO: Extract note by `markerPositionToExtract`: lat/long - We will need to extract title, description and image. Extract via lat and long from `markerPositionToExtract`
-        //                'user': user,
-        //                'title': title,
-        //                'description': description,
-        //                'image': image,
-        //                'latitude': latitude,
-        //                'longitude': longitude
         double latitude = markerPositionToExtract.latitude;
         double longitude = markerPositionToExtract.longitude;
         JSONObject postJSON = new JSONObject();
@@ -88,10 +85,15 @@ public class NoteActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_NOTE, postJSON, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                // TODO: Set text once extracted from DB
-                noteName.setText("BLA");
-                noteDescription.setText("BLA");
-                //noteImage.setImageResource();
+                try{
+                    noteName.setText(String.format("Title: %s", response.get("title").toString()));
+                    noteDescription.setText(String.format("Description: %s", response.get("description").toString()));
+                    noteLikesNum.setText(String.format("Likes: %s", response.get("likes").toString()));
+                    noteImage.setImageURI(Uri.parse(response.get("image").toString()));
+                }
+                catch (JSONException e){
+                    Log.e("NoteME", "unexpected JSON exception", e);
+                }
             }
         }, new Response.ErrorListener() {
             @Override

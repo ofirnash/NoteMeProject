@@ -10,7 +10,7 @@
         android:id="@+id/text_view_note_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Note Name - TO DO EXTRACT FROM DB"
+        android:text="Note Name - NULL"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/text_view_note_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description - TO DO!!!!"
+        android:text="Description - NULL"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.135"
@@ -40,7 +40,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_note_description"
-        app:layout_constraintVertical_bias="0.218"
+        app:layout_constraintVertical_bias="0.365"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -65,5 +65,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_view_note"
         app:srcCompat="@drawable/like" />
+
+    <TextView
+        android:id="@+id/text_view_note_likes_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Likes - NULL"
+        app:layout_constraintBottom_toTopOf="@+id/image_view_note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_note_description"
+        app:layout_constraintVertical_bias="0.637" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

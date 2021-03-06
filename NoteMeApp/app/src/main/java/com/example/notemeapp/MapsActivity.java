@@ -50,9 +50,12 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.util.JSON;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Iterator;
 
 
 public class MapsActivity extends FragmentActivity implements
@@ -414,8 +417,24 @@ public class MapsActivity extends FragmentActivity implements
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVER_ADDRESS_GET_ALL_MARKERS, null, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
-                // TODO SEND MARKERS TO addMarkerToMap
-                addMarkerToMap(35244234,4432423);
+                double lati = -1;
+                double longi = -1;
+                for(int i = 0; i < response.names().length(); i++){
+                    try {
+                        if (response.names().getString(i).equals("latitude")) {
+                            lati = (double) response.get(response.names().getString(i));
+                        }
+                        else{
+                            if (response.names().getString(i).equals("longitude")){
+                                longi = (double) response.get(response.names().getString(i));
+                            }
+                        }
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    addMarkerToMap(lati,longi);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
