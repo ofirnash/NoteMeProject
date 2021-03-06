@@ -60,6 +60,7 @@ public class NoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 addLikeToDB();
+                noteLikesNum.setText(Integer.parseInt(noteLikesNum.toString()) + 1);
             }
         });
 
@@ -68,7 +69,7 @@ public class NoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 removeLikeFromDB();
-
+                noteLikesNum.setText(Integer.parseInt(noteLikesNum.toString()) - 1);
             }
         });
 
